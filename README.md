@@ -7,10 +7,7 @@ A Browser Extension, that helps with Miro Board Password chaos
 
 
 #### Run on unsaved board
-- Add Content Script for miro.com/*
-- Search for Password Field after load
-- Add listener for login -> Ask for saving that borad/PW
-  -> Save URL + PW
+
 - after load: Check for title
   -> Save title for saved URL 
 
@@ -23,4 +20,6 @@ A Browser Extension, that helps with Miro Board Password chaos
 
 #### Popup:
  - List all saved Boards
- - 
+ - Delete single savedBoards
+ - Delete all
+ - Enable Encryption?

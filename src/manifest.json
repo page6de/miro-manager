@@ -24,7 +24,8 @@
     "type": "module"
   },
   "permissions": [
-    "webRequest"
+    "webRequest",
+    "storage"
   ],
   "host_permissions": [
     "https://miro.com/*"

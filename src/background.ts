@@ -1,7 +1,14 @@
+import { useMiro } from "./composables/useMiro"
+import { useStorage } from "./composables/useStorage"
+import { MiroBoard } from "./types/miro-types"
 
 const authReqFilters =  {urls: ['https://miro.com/api/v1/boards/*/public-access-password/verifications']}
 
 let lastPw: string | null = null
+
+const { getBoardById, saveBoard, getBoards } = useStorage()
+const { getIdFromUrl } = useMiro()
+
 
 chrome.webRequest.onBeforeRequest.addListener( (details) => {
   // @ts-ignore
@@ -12,14 +19,41 @@ chrome.webRequest.onBeforeRequest.addListener( (details) => {
   return {}
 },authReqFilters, ['requestBody'])
 
-chrome.webRequest.onCompleted.addListener( (details) => {
-  console.log('Req onComplete', details)
+chrome.webRequest.onCompleted.addListener( async (details) => {
+  const boardId = getIdFromUrl(details.url)
   if (details.statusCode === 200) {
-    // GOT CORRECT PASSWORD!!!
-    // Save Password and URL!!!
+    if (lastPw) {
+      let board = await getBoardById(boardId)
+      if (board) {
+        if (board.password !== lastPw) {
+          board.password = lastPw
+          const saveRes = await saveBoard(board)
+          console.log("MMGR | BG - Complete - SaveRes 1: ", saveRes)
+          lastPw = null
+        }
+      } else {
+        board = {
+          id: boardId,
+          title: '',
+          url: details.url,
+          password: lastPw,
+          addedAt: new Date()
+        }
+        const saveRes = await saveBoard(board)
+        
+        console.log("MMGR | BG - Complete - SaveRes 2: ", saveRes)
+        console.log("MMGR | BG - Complete - SaveRes 2 | loadBoards: ", await getBoards())
+
+        lastPw = null
+      }
+    }
+
+    //chrome.runtime.sendMessage({loginSuccess: boardId})
+
   } else {
     lastPw = null
-    // Maybe remove Password if URL was Stored
+    // Maybe remove Password if URL was Stored 
+    // ASK FOR REMOVAL!!!
   }
 
 

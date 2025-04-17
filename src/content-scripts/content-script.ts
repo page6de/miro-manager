@@ -31,6 +31,7 @@ async function checkMiroLoadingState() {
         // Now the board seems loaded and no PW is needed anymore
         if (board.title !== boardTitle) {
           board.title = boardTitle
+          board.url = location.href
           await saveBoard(board)
         }
         break;

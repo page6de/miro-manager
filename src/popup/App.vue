@@ -1,5 +1,5 @@
 <template>
-  <h1>Stored Miro Boards</h1>
+  
   <BoardList />
 </template>
 
@@ -14,8 +14,5 @@ html {
   width: 400px;
   height: 400px;
   background-color: rgb(242,242,242);
-}
-h1 {
-  margin-left: 1rem;
 }
 </style>

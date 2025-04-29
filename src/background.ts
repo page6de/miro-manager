@@ -13,7 +13,6 @@ const { getIdFromUrl } = useMiro()
 chrome.webRequest.onBeforeRequest.addListener( (details) => {
   // @ts-ignore
   var postParams = JSON.parse(decodeURIComponent(String.fromCharCode.apply(null, new Uint8Array(details.requestBody.raw[0].bytes))))
-  console.log("Request with: ", postParams)
   lastPw = postParams?.password
 
   return {}
@@ -28,7 +27,6 @@ chrome.webRequest.onCompleted.addListener( async (details) => {
         if (board.password !== lastPw) {
           board.password = lastPw
           const saveRes = await saveBoard(board)
-          console.log("MMGR | BG - Complete - SaveRes 1: ", saveRes)
           lastPw = null
         }
       } else {
@@ -41,9 +39,6 @@ chrome.webRequest.onCompleted.addListener( async (details) => {
         }
         const saveRes = await saveBoard(board)
         
-        console.log("MMGR | BG - Complete - SaveRes 2: ", saveRes)
-        console.log("MMGR | BG - Complete - SaveRes 2 | loadBoards: ", await getBoards())
-
         lastPw = null
       }
     }

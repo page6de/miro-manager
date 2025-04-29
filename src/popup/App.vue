@@ -15,4 +15,7 @@ html {
   height: 400px;
   background-color: rgb(242,242,242);
 }
+body {
+  padding-bottom: 8px;
+}
 </style>
